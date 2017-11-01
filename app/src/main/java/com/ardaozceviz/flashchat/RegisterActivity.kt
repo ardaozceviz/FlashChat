@@ -17,8 +17,7 @@ class RegisterActivity : AppCompatActivity() {
 
     lateinit var firebaseAuth: FirebaseAuth
 
-    val CHAT_PREFS = "Chat Prefs"
-    val USER_NAME_KEY = "username"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
