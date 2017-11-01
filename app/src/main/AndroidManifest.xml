@@ -3,6 +3,7 @@
     package="com.ardaozceviz.flashchat">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".MainChatActivity"></activity>
     </application>
 
 </manifest>

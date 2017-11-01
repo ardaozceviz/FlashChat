@@ -47,13 +47,6 @@ class RegisterActivity : AppCompatActivity() {
         var cancel = false
         var focusView: View? = null
 
-        /*  // Check if password is empty
-          if (TextUtils.isEmpty(password)){
-              register_password.error = getString(R.string.error_field_required)
-              focusView = register_password
-              cancel = true
-          }*/
-
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
             Log.d("RegisterActivity", "Password Check")
@@ -103,7 +96,7 @@ class RegisterActivity : AppCompatActivity() {
                 Log.d("RegisterActivity", "createFirebaseUser() is failed: ${task.exception}")
             } else {
                 saveUserName()
-                val intent = Intent(this, RegisterActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 finish()
                 startActivity(intent)
             }
@@ -111,7 +104,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun showErrorDialog(message: String) {
-        object : AlertDialog.Builder(this) {}
+        AlertDialog.Builder(this)
                 .setTitle("Oops")
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
