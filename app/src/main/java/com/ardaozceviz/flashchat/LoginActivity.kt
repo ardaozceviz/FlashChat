@@ -1,5 +1,6 @@
 package com.ardaozceviz.flashchat
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -28,7 +29,9 @@ class LoginActivity : AppCompatActivity() {
     // Executed when Register button pressed
     fun registerNewUser(view: View) {
         Log.d("Login", "Register button pressed")
-
+        val intent = Intent(this, RegisterActivity::class.java)
+        finish()
+        startActivity(intent)
     }
 
     fun attemptLogin() {
