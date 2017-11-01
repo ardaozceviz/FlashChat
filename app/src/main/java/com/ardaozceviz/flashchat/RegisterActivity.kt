@@ -1,5 +1,7 @@
 package com.ardaozceviz.flashchat
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -14,6 +16,9 @@ import kotlinx.android.synthetic.main.activity_register.*
 class RegisterActivity : AppCompatActivity() {
 
     lateinit var firebaseAuth: FirebaseAuth
+
+    val CHAT_PREFS = "Chat Prefs"
+    val USER_NAME_KEY = "username"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,6 +101,11 @@ class RegisterActivity : AppCompatActivity() {
             if (!task.isSuccessful) {
                 showErrorDialog(task.exception.toString())
                 Log.d("RegisterActivity", "createFirebaseUser() is failed: ${task.exception}")
+            } else {
+                saveUserName()
+                val intent = Intent(this, RegisterActivity::class.java)
+                finish()
+                startActivity(intent)
             }
         })
     }
@@ -107,5 +117,12 @@ class RegisterActivity : AppCompatActivity() {
                 .setPositiveButton(android.R.string.ok, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show()
+    }
+
+    fun saveUserName() {
+        val username = register_username.text.toString()
+        val prefs: SharedPreferences = getSharedPreferences(CHAT_PREFS, 0)
+        prefs.edit().putString(USER_NAME_KEY, username).apply()
+
     }
 }
