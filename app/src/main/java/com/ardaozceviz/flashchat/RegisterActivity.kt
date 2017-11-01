@@ -1,11 +1,11 @@
 package com.ardaozceviz.flashchat
 
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -42,12 +42,12 @@ class RegisterActivity : AppCompatActivity() {
         var cancel = false
         var focusView: View? = null
 
-      /*  // Check if password is empty
-        if (TextUtils.isEmpty(password)){
-            register_password.error = getString(R.string.error_field_required)
-            focusView = register_password
-            cancel = true
-        }*/
+        /*  // Check if password is empty
+          if (TextUtils.isEmpty(password)){
+              register_password.error = getString(R.string.error_field_required)
+              focusView = register_password
+              cancel = true
+          }*/
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
@@ -84,18 +84,28 @@ class RegisterActivity : AppCompatActivity() {
         Log.d("RegisterActivity", "isPasswordValid() executed")
         val confirmPassword = register_confirm_password.text.toString()
         val result: Boolean
-        return confirmPassword == password && password.length >4
+        return confirmPassword == password && password.length > 4
     }
 
-    fun createFirebaseUser(){
+    fun createFirebaseUser() {
         val email = register_email.text.toString()
         val password = register_password.text.toString()
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener({task: Task<AuthResult> ->
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener({ task: Task<AuthResult> ->
             Log.d("RegisterActivity", "createFirebaseUser(): ${task.isSuccessful}")
             Log.d("RegisterActivity", "createFirebaseUser(): $task.")
             if (!task.isSuccessful) {
+                showErrorDialog(task.exception.toString())
                 Log.d("RegisterActivity", "createFirebaseUser() is failed: ${task.exception}")
             }
         })
+    }
+
+    fun showErrorDialog(message: String) {
+        object : AlertDialog.Builder(this) {}
+                .setTitle("Oops")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show()
     }
 }
