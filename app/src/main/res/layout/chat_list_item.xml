@@ -1,38 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/chatListItemContainer"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/singleMessageContainer"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    tools:layout_editor_absoluteY="25dp">
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/chatListItemAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/colorAccent"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/prompt_msg" />
+        android:layout_gravity="start"
+        android:gravity="center_vertical"
+        android:text="@string/prompt_msg"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/chatListItemMessage"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chatListItemAuthor"
-        tools:text="@string/sample_message" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_gravity="start"
+        android:layout_margin="5dip"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="@string/sample_message"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="15sp" />
+
+</LinearLayout>

@@ -5,9 +5,11 @@ import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -79,7 +81,7 @@ class ChatListAdapter(private val activity: Activity, databaseReference: Databas
     inner class ChatInfoHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val authorTextView = itemView.findViewById<TextView>(R.id.chatListItemAuthor)
         private val messageTextView = itemView.findViewById<TextView>(R.id.chatListItemMessage)
-        private val authorParams: ConstraintLayout.LayoutParams = authorTextView.layoutParams as ConstraintLayout.LayoutParams
+        private val params: LinearLayout.LayoutParams = authorTextView.layoutParams as LinearLayout.LayoutParams
 
         fun bindChatItem(instantMessage: InstantMessage) {
             Log.d(TAG, "bindChatItem() is executed.")
@@ -89,16 +91,15 @@ class ChatListAdapter(private val activity: Activity, databaseReference: Databas
             val isMe = instantMessage.author == name
 
             if (isMe) {
-                authorParams.horizontalBias = 1f
+                params.gravity = Gravity.RIGHT
                 authorTextView.setTextColor(Color.GREEN)
                 messageTextView.setBackgroundResource(R.drawable.bubble2)
             } else {
-                authorParams.horizontalBias = 0f
-                //messageParams.horizontalBias = 0f
+                params.gravity = Gravity.LEFT
                 authorTextView.setTextColor(Color.BLUE)
                 messageTextView.setBackgroundResource(R.drawable.bubble1)
             }
-            //authorTextView.layoutParams = authorParams
+            messageTextView.layoutParams = params
         }
     }
 
