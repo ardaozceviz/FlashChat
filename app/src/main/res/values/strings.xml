@@ -15,5 +15,5 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
-    <string name="sample_message">Hello!</string>
+    <string name="sample_message">Contacts permissions are needed for providing email completions.Contacts permissions are needed for providing email completions.Contacts permissions are needed for providing email completions.Contacts permissions are needed for providing email completions.Contacts permissions are needed for providing email completions.Contacts permissions are needed for providing email completions.!</string>
 </resources>
