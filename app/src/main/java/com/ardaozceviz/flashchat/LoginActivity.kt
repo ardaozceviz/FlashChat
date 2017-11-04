@@ -13,10 +13,11 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
-
+    val TAG = "LoginActivity"
     lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onCreate() is executed.")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -26,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
 
     // Executed when Sign in button pressed
     fun signInExistingUser(view: View) {
-        Log.d("LoginActivity", "Sign in button pressed")
+        Log.d(TAG, "signInExistingUser() is executed.")
         val email = login_email.text.toString()
         val password = login_password.text.toString()
 
@@ -35,9 +36,9 @@ class LoginActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, " Logging", Toast.LENGTH_LONG).show()
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener({ task: Task<AuthResult> ->
-                Log.d("LoginActivity", "signInWithEmailAndPassword onComplete: ${task.isSuccessful}")
+                Log.d(TAG, "signInWithEmailAndPassword onComplete: ${task.isSuccessful}")
                 if (!task.isSuccessful) {
-                    Log.d("LoginActivity", "signInWithEmailAndPassword onComplete: ${task.exception}")
+                    Log.d(TAG, "signInWithEmailAndPassword onComplete: ${task.exception}")
                     showErrorDialog(task.exception.toString())
                 } else {
                     val intent = Intent(this, MainChatActivity::class.java)
@@ -49,6 +50,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun showErrorDialog(message: String) {
+        Log.d(TAG, "showErrorDialog() is executed.")
         AlertDialog.Builder(this)
                 .setTitle("Oops")
                 .setMessage(message)
@@ -59,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
     // Executed when Register button pressed
     fun registerNewUser(view: View) {
-        Log.d("LoginActivity", "Register button pressed")
+        Log.d(TAG, "registerNewUser() is executed.")
         val intent = Intent(this, RegisterActivity::class.java)
         finish()
         startActivity(intent)

@@ -4,22 +4,56 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main_chat.*
 
 class MainChatActivity : AppCompatActivity() {
+    val TAG = "MainChatActivity"
 
+    private lateinit var databaseReference: DatabaseReference
+    lateinit var username: String
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onCreate() is executed.")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_chat)
         setupUserName()
+        // databaseReference represents a particular location in our cloud database
+        // databaseReference is used for reading and writing data to that location in the database
+        databaseReference = FirebaseDatabase.getInstance().reference
+
+        // Send message when the "enter" button is pressed
+        mainMessageEditText.setOnEditorActionListener { _, _, _ ->
+            Log.d(TAG, "mainMessageEditText onClickListener is executed.")
+            sendMessage()
+            true
+        }
+
+    }
+
+    fun mainSendMessageButtonClicked(view: View) {
+        Log.d(TAG, "mainSendMessageButtonClicked() is executed.")
+        sendMessage()
+    }
+
+    fun sendMessage() {
+        Log.d(TAG, "sendMessage() is executed.")
+        val input: String = mainMessageEditText.text.toString()
+        if (!input.isEmpty()) {
+            val chat = InstantMessage(input, username)
+            Log.d(TAG, "sendMessage() chat: $chat")
+            databaseReference.child("messages").push().setValue(chat)
+            mainMessageEditText.setText("")
+        }
     }
 
     fun setupUserName() {
-        Log.d("MainChatActivity", "setupUserName is executed")
+        Log.d(TAG, "setupUserName() is executed")
         val prefs = getSharedPreferences(CHAT_PREFS, Context.MODE_PRIVATE)
-        Log.d("MainChatActivity", "prefs: $prefs")
-        Log.d("MainChatActivity", "username: ${prefs.getString(USER_NAME_KEY, null)}")
-        main_chat_username.text = prefs.getString(USER_NAME_KEY, null)
-        if (main_chat_username.text.toString().isEmpty()) main_chat_username.text = "Anonymous"
+        username = prefs.getString(USER_NAME_KEY, null)
+        Log.d(TAG, "prefs: $prefs")
+        Log.d(TAG, "username: ${prefs.getString(USER_NAME_KEY, null)}")
+        //if (main_chat_username.text.toString().isEmpty()) main_chat_username.text = "Anonymous"
     }
 }

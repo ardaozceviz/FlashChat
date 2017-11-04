@@ -14,10 +14,9 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
-
+    val TAG = "RegisterActivity" +
+            ""
     lateinit var firebaseAuth: FirebaseAuth
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +27,12 @@ class RegisterActivity : AppCompatActivity() {
 
     // Executed when Sign Up button is pressed.
     fun signUp(v: View) {
-        Log.d("RegisterActivity", "signUp() executed")
+        Log.d(TAG, "signUp() is executed.")
         attemptRegistration()
     }
 
     private fun attemptRegistration() {
-        Log.d("RegisterActivity", "attemptRegistration() executed")
+        Log.d(TAG, "attemptRegistration() is executed.")
 
         // Reset errors displayed in the form.
         register_email.error = null
@@ -48,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
-            Log.d("RegisterActivity", "Password Check")
+            Log.d(TAG, "Password check")
             register_password.error = getString(R.string.error_invalid_password)
             focusView = register_password
             cancel = true
@@ -73,12 +72,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun isEmailValid(email: String): Boolean {
-        Log.d("RegisterActivity", "isEmailValid() executed")
+        Log.d(TAG, "isEmailValid() is executed.")
         return email.contains("@")
     }
 
     fun isPasswordValid(password: String): Boolean {
-        Log.d("RegisterActivity", "isPasswordValid() executed")
+        Log.d(TAG, "isPasswordValid() is executed.")
         val confirmPassword = register_confirm_password.text.toString()
         val result: Boolean
         return confirmPassword == password && password.length > 4
@@ -88,11 +87,11 @@ class RegisterActivity : AppCompatActivity() {
         val email = register_email.text.toString()
         val password = register_password.text.toString()
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener({ task: Task<AuthResult> ->
-            Log.d("RegisterActivity", "createFirebaseUser(): ${task.isSuccessful}")
-            Log.d("RegisterActivity", "createFirebaseUser(): $task.")
+            Log.d(TAG, "createFirebaseUser(): ${task.isSuccessful}")
+            Log.d(TAG, "createFirebaseUser() task: $task.")
             if (!task.isSuccessful) {
                 showErrorDialog(task.exception.toString())
-                Log.d("RegisterActivity", "createFirebaseUser() is failed: ${task.exception}")
+                Log.d(TAG, "createFirebaseUser() is failed: ${task.exception}")
             } else {
                 saveUserName()
                 val intent = Intent(this, LoginActivity::class.java)
@@ -103,6 +102,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun showErrorDialog(message: String) {
+        Log.d(TAG, "showErrorDialog() is executed.")
         AlertDialog.Builder(this)
                 .setTitle("Oops")
                 .setMessage(message)
@@ -112,6 +112,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun saveUserName() {
+        Log.d(TAG, "saveUserName() is executed.")
         val username = register_username.text.toString()
         val prefs: SharedPreferences = getSharedPreferences(CHAT_PREFS, 0)
         prefs.edit().putString(USER_NAME_KEY, username).apply()
