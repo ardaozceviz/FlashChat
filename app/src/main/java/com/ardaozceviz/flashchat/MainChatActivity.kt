@@ -3,6 +3,7 @@ package com.ardaozceviz.flashchat
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import com.google.firebase.database.DatabaseReference
@@ -13,6 +14,7 @@ class MainChatActivity : AppCompatActivity() {
     val TAG = "MainChatActivity"
 
     private lateinit var databaseReference: DatabaseReference
+    private lateinit var adapter: ChatListAdapter
     lateinit var username: String
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate() is executed.")
@@ -29,6 +31,22 @@ class MainChatActivity : AppCompatActivity() {
             sendMessage()
             true
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val layoutManager = LinearLayoutManager(this)
+        adapter = ChatListAdapter(this, databaseReference, username)
+        mainMessagesRecyclerView.adapter = adapter
+        mainMessagesRecyclerView.layoutManager = layoutManager
+
+    }
+
+    // onStop() gets called when the app is no longer visible to the user
+    // good place to stop the resources that we don't need
+    override fun onStop() {
+        super.onStop()
+        adapter.cleanup()
 
     }
 
