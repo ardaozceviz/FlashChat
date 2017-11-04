@@ -1,22 +1,32 @@
 package com.ardaozceviz.flashchat
 
 import android.app.Activity
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import kotlinx.android.synthetic.main.chat_list_item.view.*
+import android.R.attr.author
+import android.support.constraint.ConstraintLayout
+import android.support.constraint.solver.widgets.ConstraintTableLayout
+import android.support.v7.widget.RecyclerView.ViewHolder
+
+
 
 /**
  * Created by arda on 04/11/2017.
  */
 
-class ChatListAdapter(private val activity: Activity, databaseReference: DatabaseReference, private val author: String) : RecyclerView.Adapter<ChatListAdapter.ChatInfoHolder>() {
+class ChatListAdapter(private val activity: Activity, databaseReference: DatabaseReference, private val name: String) : RecyclerView.Adapter<ChatListAdapter.ChatInfoHolder>() {
     private val TAG = "ChatListAdapter"
 
     private val snapshotList = ArrayList<DataSnapshot?>()
@@ -74,13 +84,26 @@ class ChatListAdapter(private val activity: Activity, databaseReference: Databas
     }
 
     inner class ChatInfoHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val author = itemView.findViewById<TextView>(R.id.chatListItemAuthor)
-        private val message = itemView.findViewById<TextView>(R.id.chatListItemMessage)
+        private val authorTextView = itemView.findViewById<TextView>(R.id.chatListItemAuthor)
+        private val messageTextView = itemView.findViewById<TextView>(R.id.chatListItemMessage)
+        private val params: ConstraintLayout.LayoutParams = authorTextView.layoutParams as ConstraintLayout.LayoutParams
 
         fun bindChatItem(instantMessage: InstantMessage) {
             Log.d(TAG, "bindChatItem() is executed.")
-            author.text = instantMessage.author
-            message.text = instantMessage.messsage
+
+            authorTextView.text = instantMessage.author
+            messageTextView.text = instantMessage.messsage
+            val isMe = instantMessage.author == name
+
+            if (isMe) {
+                params.horizontalBias = 1f
+                authorTextView.setTextColor(Color.GREEN)
+            } else {
+                params.horizontalBias = 0f
+                authorTextView.setTextColor(Color.BLUE)
+            }
+
+            authorTextView.layoutParams = params
         }
     }
 
